@@ -15,3 +15,18 @@ export const getProvider = (walletType) => {
     );
   }
 };
+
+/**
+ * Signs the fethced nonce from DB.
+ * @param {*} signer - signer object of user created with ethers.
+ * @param {*} nonce - nonce associated with user's profile.
+ * @returns signature.
+ */
+export const signMessage = async (signer, nonce) => {
+  try {
+    const signature = await signer.signMessage(nonce);
+    return { signature };
+  } catch (err) {
+    console.log(err);
+  }
+};

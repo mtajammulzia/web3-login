@@ -19,7 +19,3 @@ app.listen(PORT, () => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-
-// app.get("/auth/:publicAddress", (req, res) => {
-//   console.log(req.params);
-// });

@@ -16,7 +16,7 @@ export function Signup() {
     }
   };
   return (
-    <div className="login">
+    <div className="signup-page">
       <button onClick={() => connectWallet("metamask")} className="btn">
         Signup with Metamask
       </button>

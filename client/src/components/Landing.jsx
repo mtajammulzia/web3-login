@@ -12,9 +12,8 @@ export function Landing() {
     localStorage.setItem("user", JSON.stringify(loggedOutUser));
   };
   const auth = useContext(UserContext);
-  console.log(auth);
   return auth.user.accessToken ? (
-    <div>
+    <div className="landing-page">
       <h3>
         Welcomme <br></br> {auth.user.username}
       </h3>

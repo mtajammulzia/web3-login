@@ -3,8 +3,9 @@ import { Signup, Login } from "../components";
 
 function Home() {
   return (
-    <div>
+    <div className="home-page">
       <Login />
+      <div className="separating-line" />
       <Signup />
     </div>
   );

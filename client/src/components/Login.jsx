@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { ethers } from "ethers";
-import { fetchUser, signMessage, authenticateUser } from "../services";
+import { fetchUser, authenticateUser } from "../services";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../store/UserContext";
-import { getProvider } from "../utils";
+import { getProvider, signMessage } from "../utils";
 
 export function Login() {
   const auth = useContext(UserContext);
@@ -28,7 +28,6 @@ export function Login() {
         };
         auth.setUser(authUser);
         localStorage.setItem("user", JSON.stringify(authUser));
-        console.log(auth.user);
         setRedirect(true);
       }
     } else {
@@ -37,7 +36,7 @@ export function Login() {
   };
 
   return auth.user.accessToken === "" ? (
-    <div className="login">
+    <div className="login-page">
       <button onClick={() => handleClick("metamask")} className="btn">
         Login with Metamask
       </button>
