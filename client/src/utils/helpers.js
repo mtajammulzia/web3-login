@@ -9,10 +9,12 @@ export const getProvider = (walletType) => {
     return window.ethereum.providers.find(
       (provider) => provider.isMetaMask === true
     );
-  } else if ((walletType = "coinbase")) {
+  } else if (walletType === "coinbase") {
     return window.ethereum.providers.find(
       (provider) => provider.isCoinbaseWallet === true
     );
+  } else {
+    return false;
   }
 };
 

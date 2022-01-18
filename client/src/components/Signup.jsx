@@ -4,15 +4,18 @@ import { getProvider } from "../utils";
 
 export function Signup() {
   const connectWallet = async (walletType) => {
-    if (!window.ethereum) throw new Error("Metamask not found.");
     const ethProvider = getProvider(walletType);
-    const provider = new ethers.providers.Web3Provider(ethProvider);
-    const address = await provider.getSigner().getAddress();
-    const user = await createUser(address);
-    if (!user.error) {
-      alert("Signup Successful. Please login!");
+    if (ethProvider) {
+      const provider = new ethers.providers.Web3Provider(ethProvider);
+      const address = await provider.getSigner().getAddress();
+      const user = await createUser(address);
+      if (!user.error) {
+        alert("Signup Successful. Please login!");
+      } else {
+        alert("User already exists, Please login!");
+      }
     } else {
-      alert("User already exists, Please login!");
+      alert(`${walletType.toUpperCase()} wallet not found!`);
     }
   };
   return (
