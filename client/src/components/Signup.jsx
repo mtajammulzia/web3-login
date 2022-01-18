@@ -6,6 +6,7 @@ export function Signup() {
   const connectWallet = async (walletType) => {
     const ethProvider = getProvider(walletType);
     if (ethProvider) {
+      await ethProvider.request({ method: "eth_requestAccounts" });
       const provider = new ethers.providers.Web3Provider(ethProvider);
       const address = await provider.getSigner().getAddress();
       const user = await createUser(address);
