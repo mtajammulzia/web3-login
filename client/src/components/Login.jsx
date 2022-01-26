@@ -9,38 +9,45 @@ export function Login() {
   const auth = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
 
-  const handleClick = async (walletType) => {
+  const handleLogin = async (walletType) => {
     if (!window.ethereum) throw new Error("Metamask not found.");
     const ethProvider = getProvider(walletType);
-    const provider = new ethers.providers.Web3Provider(ethProvider);
-    const signer = provider.getSigner();
-    const address = await signer.getAddress();
-    const response = await fetchUser(address);
-    if (!response.error) {
-      const { signature } = await signMessage(signer, response.nonce);
-      const { accessToken, error } = await authenticateUser(address, signature);
-      if (error) {
-        throw new Error("User not authenticated");
+    if (ethProvider) {
+      const provider = new ethers.providers.Web3Provider(ethProvider);
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      const response = await fetchUser(address);
+      if (!response.error) {
+        const { signature } = await signMessage(signer, response.nonce);
+        const { accessToken, error } = await authenticateUser(
+          address,
+          signature
+        );
+        if (error) {
+          throw new Error("User not authenticated");
+        } else {
+          const authUser = {
+            username: address,
+            accessToken: accessToken,
+          };
+          auth.setUser(authUser);
+          localStorage.setItem("user", JSON.stringify(authUser));
+          setRedirect(true);
+        }
       } else {
-        const authUser = {
-          username: address,
-          accessToken: accessToken,
-        };
-        auth.setUser(authUser);
-        localStorage.setItem("user", JSON.stringify(authUser));
-        setRedirect(true);
+        alert("No user found, please sign up");
       }
     } else {
-      alert("No user found, please sign up");
+      alert(`${walletType.toUpperCase()} wallet not found!`);
     }
   };
 
   return auth.user.accessToken === "" ? (
     <div className="login-page">
-      <button onClick={() => handleClick("metamask")} className="btn">
+      <button onClick={() => handleLogin("metamask")} className="btn">
         Login with Metamask
       </button>
-      <button onClick={() => handleClick("coinbase")} className="btn">
+      <button onClick={() => handleLogin("coinbase")} className="btn">
         Login with Coinbase
       </button>
     </div>
